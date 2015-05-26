@@ -84,12 +84,14 @@
     <ClCompile Include="cow.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ManipulatorTravel.cpp" />
     <ClCompile Include="many_callback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h" />
     <ClInclude Include="cow.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="ManipulatorTravel.h" />
     <ClInclude Include="many_callback.h" />
     <ClInclude Include="skybox.h" />
   </ItemGroup>

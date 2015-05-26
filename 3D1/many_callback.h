@@ -85,11 +85,11 @@ public:
 				}
 				if(ea.getKey()==osgGA::GUIEventAdapter::KEY_Left)
 				{
-					GAME.cow.state|=4;
+					GAME.cow.state|=16;
 				}
 				if(ea.getKey()==osgGA::GUIEventAdapter::KEY_Right)
 				{
-					GAME.cow.state|=8;
+					GAME.cow.state|=32;
 				}
 				break;
 			}
@@ -108,11 +108,11 @@ public:
 				}
 				if(ea.getKey()==osgGA::GUIEventAdapter::KEY_Left)
 				{
-					GAME.cow.state^=4;
+					GAME.cow.state^=16;
 				}
 				if(ea.getKey()==osgGA::GUIEventAdapter::KEY_Right)
 				{
-					GAME.cow.state^=8;
+					GAME.cow.state^=32;
 				}
 				
 				break;
@@ -144,6 +144,7 @@ public:
 		osg::MatrixTransform* mtCow = dynamic_cast<osg::MatrixTransform*>(node);
 		//´´½¨¾ØÕó
 		osg::Matrix mr,v;
+		osg::Vec3 mov3;
 		/*
 		v.makeRotate(angle,osg::Vec3(0.0f,0.0f,1.0f));
 		mr=mtCow->getMatrix();
@@ -153,35 +154,59 @@ public:
 
 		if(GAME.cow.inited==0)
 		{
-			    v.makeTranslate(0.0f,0.0f,100.0f);
+			    
 				mr=mtCow->getMatrix();
+				v.makeRotate(osg::PI_2,osg::Vec3(0.0f,0.0f,1.0f));
+
 				mr=mr*v;
+
+				v.makeTranslate(-22.0f, -224.0f, 100.0f);
+				mr=mr*v;
+
+				
 				mtCow->setMatrix(mr);
 
 				GAME.cow.inited=1;
+				GAME.cow.dir=osg::PI_2;
 		}
 
 
 
 		if((GAME.cow.state&1)!=0)
 		{
-				v.makeTranslate(1.0f,0.0f,0.0f);
+				mov3=osg::Vec3(1.0f,0.0f,0.0f);
+				v.makeRotate(GAME.cow.dir,osg::Vec3(0.0f,0.0f,1.0f));
+				mov3=mov3*v;
+
+			    v.makeTranslate(mov3);
 				mr=mtCow->getMatrix();
 				mr=mr*v;
 				mtCow->setMatrix(mr);
+				////////////////////////
+				GAME.main_camera->ChangePosition(osg::Vec3 (0, GAME.main_camera->m_fMoveSpeed * sinf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0)) ; 
+                GAME.main_camera->ChangePosition(osg::Vec3 (GAME.main_camera->m_fMoveSpeed * cosf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0, 0)) ;
 		}
 		
 		if((GAME.cow.state&2)!=0)
 		{
-				v.makeTranslate(-1.0f,0.0f,0.0f);
+				mov3=osg::Vec3(-1.0f,0.0f,0.0f);
+				v.makeRotate(GAME.cow.dir,osg::Vec3(0.0f,0.0f,1.0f));
+				mov3=mov3*v;
+			    v.makeTranslate(mov3);
 				mr=mtCow->getMatrix();
 				mr=mr*v;
 				mtCow->setMatrix(mr);
+				////////////////////////
+				GAME.main_camera->ChangePosition(osg::Vec3 (0, -GAME.main_camera->m_fMoveSpeed * sinf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0)) ; 
+		        GAME.main_camera->ChangePosition(osg::Vec3(-GAME.main_camera->m_fMoveSpeed * cosf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0, 0)) ;
 		}
 
 		if((GAME.cow.state&4)!=0)
 		{
-				v.makeTranslate(0.0f,1.0f,0.0f);
+				mov3=osg::Vec3(0.0f,1.0f,0.0f);
+				v.makeRotate(GAME.cow.dir,osg::Vec3(0.0f,0.0f,1.0f));
+				mov3=mov3*v;
+			    v.makeTranslate(mov3);
 				mr=mtCow->getMatrix();
 				mr=mr*v;
 				mtCow->setMatrix(mr);
@@ -189,10 +214,54 @@ public:
 
 		if((GAME.cow.state&8)!=0)
 		{
-				v.makeTranslate(0.0f,-1.0f,0.0f);
+				mov3=osg::Vec3(0.0f,-1.0f,0.0f);
+				v.makeRotate(GAME.cow.dir,osg::Vec3(0.0f,0.0f,1.0f));
+				mov3=mov3*v;
+
+			    v.makeTranslate(mov3);
 				mr=mtCow->getMatrix();
 				mr=mr*v;
 				mtCow->setMatrix(mr);
+		}
+
+		if((GAME.cow.state&16)!=0)
+		{
+			mr=mtCow->getMatrix();
+			v.makeRotate(osg::DegreesToRadians(GAME.main_camera->m_fAngle),osg::Vec3(0.0f,0.0f,1.0f));
+			mr=v*mr;
+			mtCow->setMatrix(mr);
+			/////////////////////////
+			//v.makeTranslate(GAME.main_camera->m_vPosition);
+			mov3=GAME.main_camera->m_vPosition;
+			mr=mtCow->getMatrix();
+			mov3=mov3*mr.inverse(mr);
+			v.makeRotate(osg::DegreesToRadians(GAME.main_camera->m_fAngle),osg::Vec3(0.0f,0.0f,1.0f));
+			mov3=mov3*v;
+			mov3=mov3*mr;
+			GAME.main_camera->m_vPosition=mov3;
+
+
+			GAME.main_camera->m_vRotation._v[2] += osg::DegreesToRadians(GAME.main_camera->m_fAngle);
+
+			GAME.cow.dir+=osg::DegreesToRadians(GAME.main_camera->m_fAngle);
+		}
+		if((GAME.cow.state&32)!=0)
+		{
+			mr=mtCow->getMatrix();
+			v.makeRotate(-osg::DegreesToRadians(GAME.main_camera->m_fAngle),osg::Vec3(0.0f,0.0f,1.0f));
+			mr=v*mr;
+			mtCow->setMatrix(mr);
+			/////////////////////////////
+			mov3=GAME.main_camera->m_vPosition;
+			mr=mtCow->getMatrix();
+			mov3=mov3*mr.inverse(mr);
+			v.makeRotate(osg::DegreesToRadians(-GAME.main_camera->m_fAngle),osg::Vec3(0.0f,0.0f,1.0f));
+			mov3=mov3*v;
+			mov3=mov3*mr;
+			GAME.main_camera->m_vPosition=mov3;
+
+			GAME.main_camera->m_vRotation._v[2] -= osg::DegreesToRadians(GAME.main_camera->m_fAngle);
+			GAME.cow.dir-=osg::DegreesToRadians(GAME.main_camera->m_fAngle);
 		}
 		//angle+= 0.01 ;
 

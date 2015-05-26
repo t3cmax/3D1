@@ -20,12 +20,13 @@
 #include "many_callback.h"
 #include "constant.h"
 #include "skybox.h"
+#include "ManipulatorTravel.h"
 
 using namespace osg;
 using namespace osgViewer;
 using namespace std;
 
-z_game GAME;
+z_game GAME; 
 
 int main()
 {
@@ -54,6 +55,11 @@ int main()
 
 	root->addChild(mt);
 	mt->addChild(createSkyBox());
+
+
+	//把漫游器加入到场景中
+	GAME.main_camera=TravelManipulator::TravelToScene(viewer);
+
 
 	//优化场景数据
 	osgUtil::Optimizer optimizer ;
