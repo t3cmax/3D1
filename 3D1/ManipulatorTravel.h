@@ -33,7 +33,7 @@ public:
 	// 把漫游加入到场景之中
 	static TravelManipulator * TravelToScene(osg::ref_ptr <osgViewer::Viewer> viewer);
 private:
-	osg::ref_ptr <osgViewer::Viewer>	m_pHostViewer;
+	
 
 	
 	
@@ -41,6 +41,7 @@ private:
 	int state;//1，2，4，8，16，32分别为前，后，左，右，左旋，右旋
 
 public:
+	osg::ref_ptr <osgViewer::Viewer>	m_pHostViewer;
 	//移动速度
 	float m_fMoveSpeed;
 	//

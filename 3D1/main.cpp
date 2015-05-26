@@ -36,12 +36,14 @@ int main()
 
 	Node* cow_node = new osg::Node();
 	Node* lz_node = new osg::Node();
-	cow_node = osgDB::readNodeFile("cow.osg");
+	cow_node = osgDB::readNodeFile("boy_run1.ive");
 	lz_node = osgDB::readNodeFile("lz.osg");
 	//创建矩阵变换节点
 	MatrixTransform* mt = new osg::MatrixTransform();
+	MatrixTransform* mt2 = new osg::MatrixTransform();
 	mt->addChild(cow_node);
-	root->addChild(lz_node);
+	root->addChild(mt2);
+	mt2->addChild(lz_node);
 	//设置更新回调
 	
 
@@ -54,7 +56,7 @@ int main()
 	////////////////////////////////////////////////////////////////////////////
 
 	root->addChild(mt);
-	mt->addChild(createSkyBox());
+	mt2->addChild(createSkyBox());
 
 
 	//把漫游器加入到场景中

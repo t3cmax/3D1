@@ -1,7 +1,3 @@
-/**********************************************************
-*Write by FlySky
-*zzuxp@163.com  http://www.OsgChina.org   
-**********************************************************/
 
 #include "ManipulatorTravel.h"
 
@@ -10,10 +6,10 @@ TravelManipulator::TravelManipulator(): m_fMoveSpeed(1.0f)
 , m_bLeftButtonDown(false)
 , m_fpushX(0)
 , m_fAngle(2.5)
-, m_bPeng(false)
+, m_bPeng(true)
 , m_fpushY(0)
 {
-	m_vPosition = osg::Vec3(-22.0f, -231.0f, 105.0f);
+	m_vPosition = osg::Vec3(-22.0f, -224.9f, 99.8f);
 
 	m_vRotation = osg::Vec3((osg::PI_4)+0.6f, 0.0f, 0.0f);		
 
