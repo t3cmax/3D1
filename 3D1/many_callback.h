@@ -143,7 +143,7 @@ public:
 		//创建矩阵变换节点
 		osg::MatrixTransform* mtCow = dynamic_cast<osg::MatrixTransform*>(node);
 		//创建矩阵
-		osg::Matrix mr,v;
+		osg::Matrix mr,v,ori;
 		osg::Vec3 mov3;
 		osg::Vec3 pos1,pos2;
 		/*
@@ -180,7 +180,7 @@ public:
 				mov3=mov3*v;
 
 			    v.makeTranslate(mov3);
-				mr=mtCow->getMatrix();
+				ori=mr=mtCow->getMatrix();
 				pos1=osg::Vec3(0.0f,0.0f,0.0f)*mtCow->getMatrix();
 				mr=mr*v;
 				mtCow->setMatrix(mr);
@@ -189,10 +189,16 @@ public:
 				//cout<<pos1._v[0]<<' '<<pos1._v[1]<<' '<<pos1._v[2]<<"      "<<pos2._v[0]<<' '<<pos2._v[1]<<' '<<pos2._v[2]<<endl;
 				//while(1);
 
-				check_into_ground(node,pos1,pos2);
+				if(check_into_ground(node,pos1,pos2)==false)
+				{
+					mtCow->setMatrix(ori);
+				}
+				else
+				{
 				////////////////////////
-				GAME.main_camera->ChangePosition(osg::Vec3 (0, GAME.main_camera->m_fMoveSpeed * sinf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0)) ; 
-                GAME.main_camera->ChangePosition(osg::Vec3 (GAME.main_camera->m_fMoveSpeed * cosf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0, 0)) ;
+				    GAME.main_camera->ChangePosition(osg::Vec3 (0, GAME.main_camera->m_fMoveSpeed * sinf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0)) ; 
+                    GAME.main_camera->ChangePosition(osg::Vec3 (GAME.main_camera->m_fMoveSpeed * cosf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0, 0)) ;
+				}
 		}
 		
 		if((GAME.cow.state&2)!=0)
@@ -284,10 +290,11 @@ public:
 		traverse( node, nv );
 	}
 	
-	void check_into_ground(osg::Node* node,osg::Vec3 pos1,osg::Vec3 pos2)
+	bool check_into_ground(osg::Node* node,osg::Vec3 pos1,osg::Vec3 pos2)
 	{
 		bool first=0;
 		bool flag;
+		int times=0;
 		while(1)
 		{
 		
@@ -325,6 +332,7 @@ public:
 					pos2=pos2+osg::Vec3(0.0f,0.0f,-0.1f);
 					pos1=pos1+osg::Vec3(0.0f,0.0f,-0.1f);
 					cout<<"!!!!!!!!!!!!!!"<<endl;
+				    times++;
 				}
 			}
 			
@@ -349,17 +357,26 @@ public:
 				}
 				else
 				{
-					move_a_bit(node,osg::Vec3(0.0f,0.0f,0.1f));
-					pos2=pos2+osg::Vec3(0.0f,0.0f,0.1f);
-					pos1=pos1+osg::Vec3(0.0f,0.0f,0.1f);
-					cout<<pos1._v[2]<<' '<<pos2._v[2]<<"((((((((((("<<endl;
+					if(times<=10)
+					{
+					    move_a_bit(node,osg::Vec3(0.0f,0.0f,0.1f));
+					    pos2=pos2+osg::Vec3(0.0f,0.0f,0.1f);
+					    pos1=pos1+osg::Vec3(0.0f,0.0f,0.1f);
+					    cout<<pos1._v[2]<<' '<<pos2._v[2]<<"((((((((((("<<endl;
+						times++;
+					}
+					else
+					{
+						GAME.main_camera->m_vPosition -= osg::Vec3(0.0f,0.0f,0.1f)*times;
+						return false;
+					}
 				}
 			}
 			
 		}
 
 		}
-		return ;
+		return true;
 	}
 	
 

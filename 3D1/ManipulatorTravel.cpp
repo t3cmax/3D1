@@ -6,7 +6,7 @@ TravelManipulator::TravelManipulator(): m_fMoveSpeed(1.0f)
 , m_bLeftButtonDown(false)
 , m_fpushX(0)
 , m_fAngle(2.5)
-, m_bPeng(true)
+, m_bPeng(false)
 , m_fpushY(0)
 {
 	m_vPosition = osg::Vec3(-22.0f, -224.9f, 99.8f);
