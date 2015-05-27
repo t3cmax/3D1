@@ -21,6 +21,7 @@
 #include "constant.h"
 #include "skybox.h"
 #include "ManipulatorTravel.h"
+#include "CreateLighting.h"
 
 using namespace osg;
 using namespace osgViewer;
@@ -36,14 +37,20 @@ int main()
 
 	Node* cow_node = new osg::Node();
 	Node* lz_node = new osg::Node();
+	Group* light_node = new osg::Group();
+
 	cow_node = osgDB::readNodeFile("boy_run1.ive");
 	lz_node = osgDB::readNodeFile("lz.osg");
 	//创建矩阵变换节点
 	MatrixTransform* mt = new osg::MatrixTransform();
 	MatrixTransform* mt2 = new osg::MatrixTransform();
+
+	light_node->addChild(mt);
 	mt->addChild(cow_node);
-	root->addChild(mt2);
+
+	light_node->addChild(mt2);
 	mt2->addChild(lz_node);
+	mt2->addChild(createSkyBox());
 	//设置更新回调
 	
 
@@ -54,10 +61,8 @@ int main()
 	camera->setEventCallback(new z_camera_callback());
 	mt->setUpdateCallback(new z_cow_callback());
 	////////////////////////////////////////////////////////////////////////////
-
-	root->addChild(mt);
-	mt2->addChild(createSkyBox());
-
+	Group* after_create = CreateLighting(light_node);
+	root->addChild(after_create);
 
 	//把漫游器加入到场景中
 	GAME.main_camera=TravelManipulator::TravelToScene(viewer);
