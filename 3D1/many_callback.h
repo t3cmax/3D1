@@ -206,13 +206,24 @@ public:
 				mov3=osg::Vec3(-1.0f,0.0f,0.0f);
 				v.makeRotate(GAME.cow.dir,osg::Vec3(0.0f,0.0f,1.0f));
 				mov3=mov3*v;
+
 			    v.makeTranslate(mov3);
-				mr=mtCow->getMatrix();
+				ori=mr=mtCow->getMatrix();
+				pos1=osg::Vec3(0.0f,0.0f,0.0f)*mtCow->getMatrix();
 				mr=mr*v;
 				mtCow->setMatrix(mr);
+				pos2=osg::Vec3(0.0f,0.0f,0.0f)*mtCow->getMatrix();
 				////////////////////////
-				GAME.main_camera->ChangePosition(osg::Vec3 (0, -GAME.main_camera->m_fMoveSpeed * sinf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0)) ; 
-		        GAME.main_camera->ChangePosition(osg::Vec3(-GAME.main_camera->m_fMoveSpeed * cosf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0, 0)) ;
+
+				if(check_into_ground(node,pos1,pos2)==false)
+				{
+					mtCow->setMatrix(ori);
+				}
+				else
+				{
+				    GAME.main_camera->ChangePosition(osg::Vec3 (0, -GAME.main_camera->m_fMoveSpeed * sinf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0)) ; 
+		            GAME.main_camera->ChangePosition(osg::Vec3(-GAME.main_camera->m_fMoveSpeed * cosf(osg::PI_2+GAME.main_camera->m_vRotation._v[2]), 0, 0)) ;
+				}
 		}
 
 		if((GAME.cow.state&4)!=0)
