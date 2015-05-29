@@ -88,6 +88,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManipulatorTravel.cpp" />
     <ClCompile Include="many_callback.cpp" />
+    <ClCompile Include="TextureAndPrimitives.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="ManipulatorTravel.h" />
     <ClInclude Include="many_callback.h" />
     <ClInclude Include="skybox.h" />
+    <ClInclude Include="TextureAndPrimitives.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

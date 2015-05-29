@@ -29,6 +29,7 @@
 #include "skybox.h"
 #include "ManipulatorTravel.h"
 #include "CreateLighting.h"
+#include "TextureAndPrimitives.h"
 
 using namespace osg;
 using namespace osgViewer;
@@ -56,6 +57,7 @@ int main()
 
 	Node* cow_node = new osg::Node();
 	Node* lz_node = new osg::Node();
+	Node* fence_node = new osg::Node();
 	Group* scene_node = new osg::Group();
 
 	cow_node = osgDB::readNodeFile("boy_run1.ive");
@@ -63,15 +65,28 @@ int main()
 
 	lz_node = osgDB::readNodeFile("lz.osg");
 	lz_node->setNodeMask(ReceivesShadowTraversalMask);
+
+	osg::Image* image = new osg::Image();
+	image = osgDB::readImageFile("Images/primitives.gif");
+	fence_node = createBillBoard(image);
+
 	//创建矩阵变换节点
 	MatrixTransform* mt = new osg::MatrixTransform();
 	MatrixTransform* mt2 = new osg::MatrixTransform();
+	MatrixTransform* fence_mt = new osg::MatrixTransform();
 
 	scene_node->addChild(mt);
 	mt->addChild(cow_node);
 
 	scene_node->addChild(mt2);
 	mt2->addChild(lz_node);
+
+	fence_mt->addChild(fence_node);
+	Matrix fence_matrix;
+	fence_matrix.setTrans(Vec3(0,270,50));
+	fence_mt->setMatrix(fence_matrix);
+
+	scene_node->addChild(fence_mt);
 
 	//得到相机
 	Camera* camera = viewer->getCamera();
