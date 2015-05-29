@@ -6,6 +6,7 @@
 #include <osg/Geode>
 #include <osg/Group>
 #include <osg/MatrixTransform>
+#include <osg/ComputeBoundsVisitor>
 
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>

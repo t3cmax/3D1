@@ -56,6 +56,8 @@ public:
 
 	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa)
 	{ 
+
+
 		//得到场景数据
 		osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 		//osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(viewer->getSceneData());
@@ -130,15 +132,22 @@ public:
 class z_cow_callback :public osg::NodeCallback
 {
 public:
+	int cnt;
+	osg::ref_ptr<osg::Program> program_normal;
+	osg::ref_ptr<osg::Program> program_red;
+
 	z_cow_callback()
 	{
 		//
 		angle=0.01;
+		cnt=0;
+		program_normal = new osg::Program();
+		program_red = new osg::Program();
+		program_red->addShader(osg::Shader::readShaderFile(osg::Shader::Type::VERTEX, "vertexshader.glsl"));
 	}
 
 	virtual void operator()(osg::Node* node ,osg::NodeVisitor* nv)
 	{
-		
 
 		//创建矩阵变换节点
 		osg::MatrixTransform* mtCow = dynamic_cast<osg::MatrixTransform*>(node);
@@ -152,6 +161,16 @@ public:
 		mr=mr*v;
 		mtCow->setMatrix(mr);
 		*/
+		
+		/*cnt++;
+		if(cnt>=100)
+		{
+			mtCow->getOrCreateStateSet()->setAttributeAndModes(program_red, osg::StateAttribute::Values::ON);
+		}
+		if(cnt>=1000)
+		{
+			mtCow->getOrCreateStateSet()->setAttributeAndModes(program_normal, osg::StateAttribute::Values::ON);
+		}*/
 
 		if(GAME.cow.inited==0)
 		{
@@ -390,7 +409,6 @@ public:
 		return true;
 	}
 	
-
 	void move_a_bit(osg::Node* node,osg::Vec3 dat)
 	{
 		cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;

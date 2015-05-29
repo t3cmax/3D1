@@ -8,6 +8,8 @@ z_cow::z_cow()
 	dir=0.0;
 	speed=1.0f;
 	angle_f=2.5f;
+
+	hurt = false;
 }
 
 z_cow::~z_cow()

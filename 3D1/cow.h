@@ -11,6 +11,8 @@ class z_cow
 		double dir;
 		double speed;
 		double angle_f;
+
+		bool hurt;
 		z_cow();
 		~z_cow();
 };
