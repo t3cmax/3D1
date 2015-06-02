@@ -12,16 +12,20 @@
 #include "TextureAndPrimitives.h"
 #include "CreateBomb.h"
 #include "SceneGroup.h"
+#include "ResourceManager.h"
 
 using namespace osg;
 
 z_game GAME; 
+ResourceManager *res_manager;
 
 const int ReceivesShadowTraversalMask = 0x1;
 const int CastsShadowTraversalMask = 0x2;
 int main()
 {
 	osgViewer::Viewer* viewer = new osgViewer::Viewer();
+	res_manager = new ResourceManager();
+
 	Group* root = new Group() ;
 	Group* scene_node = new Group();
 	SceneGroup *scene_group = new SceneGroup(scene_node);

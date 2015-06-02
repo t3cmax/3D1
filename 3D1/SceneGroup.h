@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Bomb.h"
 #include "constant.h"
+#include "ResourceManager.h"
 using namespace osg;
 
 class SceneGroup
@@ -25,6 +26,7 @@ public:
 	osg::ref_ptr<osg::Program> program_red;
 	int hurt_cnt;
 	bool hurt;
+
 public:
 	SceneGroup(Group* root);
 	~SceneGroup(void);

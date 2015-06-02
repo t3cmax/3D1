@@ -91,6 +91,7 @@
     <ClCompile Include="ManipulatorTravel.cpp" />
     <ClCompile Include="many_callback.cpp" />
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SceneGroup.cpp" />
     <ClCompile Include="TextureAndPrimitives.cpp" />
   </ItemGroup>
@@ -105,6 +106,7 @@
     <ClInclude Include="many_callback.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="osgheaders.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SceneGroup.h" />
     <ClInclude Include="skybox.h" />
     <ClInclude Include="TextureAndPrimitives.h" />

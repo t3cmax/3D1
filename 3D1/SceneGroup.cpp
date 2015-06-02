@@ -11,6 +11,7 @@ SceneGroup::SceneGroup(Group* root)
 	program_normal = new osg::Program();
 	program_red = new osg::Program();
 	program_red->addShader(osg::Shader::readShaderFile(osg::Shader::Type::VERTEX, "vertexshader.glsl"));
+
 }
 
 
