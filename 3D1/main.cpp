@@ -1,26 +1,6 @@
 #include<iostream>
-#include <osgViewer/Viewer>
 
-#include <osg/Node>
-#include <osg/Geode>
-#include <osg/Group>
-#include <osg/MatrixTransform>
-
-#include <osgDB/ReadFile>
-#include <osgDB/WriteFile>
-
-#include <osgGA/GUIEventAdapter>
-#include <osgGA/GUIEventHandler>
-#include <osgGA/EventVisitor>
-
-#include <osgUtil/Optimizer>
-
-#include <osgShadow/ShadowedScene>
-#include <osgShadow/ShadowVolume>
-#include <osgShadow/ShadowTexture>
-#include <osgShadow/ShadowMap>
-#include <osgShadow/SoftShadowMap>
-#include <osgShadow/ParallelSplitShadowMap>
+#include "osgheaders.h"
 
 #include "cow.h"
 #include "game.h"
@@ -30,20 +10,21 @@
 #include "ManipulatorTravel.h"
 #include "CreateLighting.h"
 #include "TextureAndPrimitives.h"
+#include "CreateBomb.h"
+#include "Scene.h"
 
 using namespace osg;
-using namespace osgViewer;
-using namespace std;
 
 z_game GAME; 
 
 const int ReceivesShadowTraversalMask = 0x1;
 const int CastsShadowTraversalMask = 0x2;
-
 int main()
 {
-	Viewer* viewer = new osgViewer::Viewer();
-	Group* root = new osg::Group() ;
+	osgViewer::Viewer* viewer = new osgViewer::Viewer();
+	Group* root = new Group() ;
+	Group* scene_node = new Group();
+	SceneGroup *scene_group = new SceneGroup(scene_node);
 
 	//创建一个阴影节点，并标识接收对象和投影对象
 	osgShadow::ShadowedScene* shadowedScene = new osgShadow::ShadowedScene();
@@ -55,38 +36,60 @@ int main()
 	//关联阴影纹理
 	shadowedScene->setShadowTechnique(st);
 
-	Node* cow_node = new osg::Node();
+	Node* player_node = new osg::Node();
 	Node* lz_node = new osg::Node();
-	Node* fence_node = new osg::Node();
-	Group* scene_node = new osg::Group();
+	Node* enemy_node = new osg::Node();
+	Node* fence_node[3];
 
-	cow_node = osgDB::readNodeFile("boy_run1.ive");
-	cow_node->setNodeMask(CastsShadowTraversalMask);
+	player_node = osgDB::readNodeFile("boy_run1.ive");
+	player_node->setNodeMask(CastsShadowTraversalMask);
 
 	lz_node = osgDB::readNodeFile("lz.osg");
 	lz_node->setNodeMask(ReceivesShadowTraversalMask);
 
-	osg::Image* image = new osg::Image();
-	image = osgDB::readImageFile("Images/primitives.gif");
-	fence_node = createBillBoard(image);
+	osg::Image* wall_image = new osg::Image();
+	wall_image = osgDB::readImageFile("Images/wall.jpg");
+	fence_node[0] = createWall(wall_image, -300, 300, 170);
+	fence_node[1] = createWall(wall_image, -300, 300, 170);
 
 	//创建矩阵变换节点
 	MatrixTransform* mt = new osg::MatrixTransform();
 	MatrixTransform* mt2 = new osg::MatrixTransform();
-	MatrixTransform* fence_mt = new osg::MatrixTransform();
+	MatrixTransform* fence_mt[4];
 
-	scene_node->addChild(mt);
-	mt->addChild(cow_node);
+	scene_group->AddNode(mt);
+	mt->addChild(player_node);
 
-	scene_node->addChild(mt2);
+	scene_group->AddNode(mt2);
 	mt2->addChild(lz_node);
 
-	fence_mt->addChild(fence_node);
-	Matrix fence_matrix;
-	fence_matrix.setTrans(Vec3(0,270,50));
-	fence_mt->setMatrix(fence_matrix);
-
-	scene_node->addChild(fence_mt);
+	for(int i=1; i<=4; i++)
+	{
+		fence_mt[i] = new MatrixTransform();
+		fence_mt[i]->addChild(fence_node[(i-1)/2]);
+		Matrix fence_matrix;
+		if(i==1)
+		{
+			fence_matrix.setTrans(Vec3(0,270,40));
+		}
+		else if(i==2)
+		{
+			fence_matrix.setTrans(Vec3(0, -280, -60));
+		}
+		else if(i==3)
+		{
+			fence_matrix.makeRotate(osg::PI/2, Vec3(0,0,1));
+			fence_matrix.postMultTranslate(Vec3(250,0,30));
+		}
+		else if(i==4)
+		{
+			fence_matrix.makeRotate(-osg::PI/2, Vec3(0,0,1));
+			fence_matrix.postMultTranslate(Vec3(-270,0,-60));
+		}
+		
+		fence_mt[i]->setMatrix(fence_matrix);
+		scene_group->AddNode(fence_mt[i]);
+	}
 
 	//得到相机
 	Camera* camera = viewer->getCamera();
@@ -95,14 +98,15 @@ int main()
 	camera->setEventCallback(new z_camera_callback());
 	mt->setUpdateCallback(new z_cow_callback());
 
-	shadowedScene->addChild(scene_node);
-	Group* light_node = CreateLighting(scene_node);
+	shadowedScene->addChild(scene_group->scene_root);
+	Group* light_node = CreateLighting(scene_group->scene_root);
 	shadowedScene->addChild(light_node);
 
 	////////////////////////////////////////////////////////////////////////////
 	
 	root->addChild(createSkyBox());
 	root->addChild(shadowedScene);
+	root->addChild(scene_group->scene_root);
 
 	//把漫游器加入到场景中
 	GAME.main_camera=TravelManipulator::TravelToScene(viewer);
@@ -116,7 +120,11 @@ int main()
 
 	viewer->realize();
 
-	viewer->run();
+	int cnt=0;
+	while(!viewer->done())
+	{
+		viewer->frame();
+	}
 
 	return 0 ;
 }

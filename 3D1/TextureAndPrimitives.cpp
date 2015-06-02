@@ -1,22 +1,22 @@
 #include "TextureAndPrimitives.h"
 
-osg::Node* createBillBoard(osg::Image* image)
+osg::Node* createWall(osg::Image* image, float start_x, float end_x, float height)
 {
 	//创建四边形
 	osg::Geometry* geometry = new osg::Geometry() ;
 
 	//设置顶点
-	osg::Vec3Array* v = new osg::Vec3Array() ;
-	v->push_back(osg::Vec3(-300, 0.0, 0)) ;
-	v->push_back(osg::Vec3(300, 0.0, 0)) ;
-	v->push_back(osg::Vec3(300, 0.0, 180)) ;
-	v->push_back(osg::Vec3(-300, 0.0, 180)) ;
+	osg::Vec3Array* v = new osg::Vec3Array();
+	v->push_back(osg::Vec3(start_x, 0.0, 0)) ;
+	v->push_back(osg::Vec3(end_x, 0.0, 0)) ;
+	v->push_back(osg::Vec3(end_x, 0.0, height)) ;
+	v->push_back(osg::Vec3(start_x, 0.0, height)) ;
 
 	geometry->setVertexArray(v) ;
 
 	//设置法线
 	osg::Vec3Array* normal = new osg::Vec3Array() ;
-	normal->push_back(osg::Vec3(1.0f,0.0f,0.0f)^osg::Vec3(0.0f,0.0f,1.0f));
+	normal->push_back((osg::Vec3(-1.0f,0.0f,0.0f)^osg::Vec3(0.0f,0.0f,1.0f)));
 
 	geometry->setNormalArray(normal) ;
 	geometry->setNormalBinding(osg::Geometry::BIND_OVERALL) ;

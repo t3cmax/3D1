@@ -12,7 +12,7 @@
 #include <osg/Billboard>
 
 //创建一个四边形节点
-osg::Node* createBillBoard(osg::Image* );
+osg::Node* createWall(osg::Image* image, float start_x, float end_x, float height);
 
 
 //创建二维纹理状态对象

@@ -6,19 +6,28 @@ osg::Group* CreateLighting(osg::Node* node)
 	osg::Group* lightRoot= new osg::Group();
 	lightRoot->addChild(node);
 
+	//计算包围盒
+	osg::BoundingSphere bs ;
+	node->computeBound() ;
+	bs=node->getBound() ;
+
 	//开启光照
 	osg::StateSet* stateset = new osg::StateSet();
 	stateset = lightRoot->getOrCreateStateSet();
 	stateset->setMode(GL_LIGHTING,osg::StateAttribute::ON);
 	stateset->setMode(GL_LIGHT0,osg::StateAttribute::ON);
-	stateset->setMode(GL_LIGHT1, osg::StateAttribute::ON);
+	//stateset->setMode(GL_LIGHT1, osg::StateAttribute::ON);
 
 	//创建一个Light对象
 	osg::Light* light = new osg::Light();
 	light->setLightNum(1);
 	
+	//using namespace std;
+	//cout<<"centerx: "<<bs.center().x()<<" centery: "<<bs.center().y()<<" centerz: "<<bs.center().z()<<endl;
+
+
 	//设置位置
-	light->setPosition(osg::Vec4(0.0, 0.0, 0.0, 1.0f));
+	light->setPosition(osg::Vec4(bs.center().x(), bs.center().y(), bs.center().z()+bs.radius(), 1.0f));
 	//设置环境光的颜色
 	light->setAmbient(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	//设置散射光的颜色
