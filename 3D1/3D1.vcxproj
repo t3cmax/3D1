@@ -84,7 +84,6 @@
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="cow.cpp" />
-    <ClCompile Include="CreateBomb.cpp" />
     <ClCompile Include="CreateLighting.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="game.cpp" />
@@ -92,14 +91,13 @@
     <ClCompile Include="ManipulatorTravel.cpp" />
     <ClCompile Include="many_callback.cpp" />
     <ClCompile Include="Move.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneGroup.cpp" />
     <ClCompile Include="TextureAndPrimitives.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="cow.h" />
-    <ClInclude Include="CreateBomb.h" />
     <ClInclude Include="CreateLighting.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="game.h" />
@@ -107,7 +105,7 @@
     <ClInclude Include="many_callback.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="osgheaders.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneGroup.h" />
     <ClInclude Include="skybox.h" />
     <ClInclude Include="TextureAndPrimitives.h" />
   </ItemGroup>

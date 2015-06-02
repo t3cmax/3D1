@@ -6,7 +6,6 @@
 
 #include "constant.h"
 
-
 using namespace osg;
 using namespace osgViewer;
 using namespace std;
@@ -116,17 +115,14 @@ class z_cow_callback :public osg::NodeCallback
 {
 public:
 	int cnt;
-	osg::ref_ptr<osg::Program> program_normal;
-	osg::ref_ptr<osg::Program> program_red;
+
 
 	z_cow_callback()
 	{
 		//
 		angle=0.01;
 		cnt=0;
-		program_normal = new osg::Program();
-		program_red = new osg::Program();
-		program_red->addShader(osg::Shader::readShaderFile(osg::Shader::Type::VERTEX, "vertexshader.glsl"));
+
 	}
 
 	virtual void operator()(osg::Node* node ,osg::NodeVisitor* nv)
@@ -417,7 +413,7 @@ public:
 	double angle ;
 };
 
-class BombCallback : public osg::NodeCallback
+/*class BombCallback : public osg::NodeCallback
 {
 public:
 	Vec3 start_position;
@@ -459,6 +455,6 @@ public:
 		}
 		return;
 	}
-};
+};*/
 
 #endif 

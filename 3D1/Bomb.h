@@ -10,7 +10,9 @@ public:
 
 public:
 	Bomb(void);
-	Bomb(Vec3 position);
+	Bomb(Vec3 position, Vec3 speed);
 	~Bomb(void);
+
+	void CreateBomb();
 };
 

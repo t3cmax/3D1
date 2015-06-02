@@ -9,7 +9,7 @@ private:
 	Move* move;
 public:
 	Entity();
-	Entity(Vec3 velocity, Vec3 accel);
+	Entity(Vec3 velocity, Vec3 accel, Vec3 position);
 	Vec3 GetVelocity(){return move->getVelocity();}
 	~Entity();
 };

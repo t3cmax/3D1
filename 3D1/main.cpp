@@ -11,7 +11,7 @@
 #include "CreateLighting.h"
 #include "TextureAndPrimitives.h"
 #include "CreateBomb.h"
-#include "Scene.h"
+#include "SceneGroup.h"
 
 using namespace osg;
 
@@ -59,6 +59,7 @@ int main()
 
 	scene_group->AddNode(mt);
 	mt->addChild(player_node);
+	scene_group->SetPlayerMatrixTrans(mt);
 
 	scene_group->AddNode(mt2);
 	mt2->addChild(lz_node);
@@ -111,7 +112,6 @@ int main()
 	//把漫游器加入到场景中
 	GAME.main_camera=TravelManipulator::TravelToScene(viewer);
 
-
 	//优化场景数据
 	osgUtil::Optimizer optimizer ;
 	optimizer.optimize(root);
@@ -123,6 +123,7 @@ int main()
 	int cnt=0;
 	while(!viewer->done())
 	{
+		scene_group->Update();
 		viewer->frame();
 	}
 
