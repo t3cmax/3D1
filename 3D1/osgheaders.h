@@ -8,6 +8,10 @@
 #include <osg/PositionAttitudeTransform>
 #include <osg/ShapeDrawable>
 #include <osg/LineSegment>
+#include <osg/Geometry>
+
+#include <osgText/Text>
+#include <osgText/Font>
 
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>
