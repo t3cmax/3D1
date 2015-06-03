@@ -24,7 +24,7 @@ void Bomb::CreateBomb()
 	//创建精细度对象，精细度越高，细分就越多
 	osg::TessellationHints* hints = new osg::TessellationHints;
 	//设置精细度为0.5f
-	hints->setDetailRatio(0.5f);
+	hints->setDetailRatio(0.3f);
 
 	Texture2D* texture = res_manager->bomb_texture;
 

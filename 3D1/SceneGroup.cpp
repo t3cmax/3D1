@@ -1,5 +1,6 @@
 #include "SceneGroup.h"
 #include <sstream>
+#include <stdlib.h>
 
 std::stringstream s_stream;
 
@@ -53,15 +54,19 @@ Vec3 RandomVec3(Vec3 start, Vec3 end)
 void SceneGroup::Update()
 {
 	cnt++;
-	if(cnt%25==0)
+	unsigned int interval = std::max(10u, 25 - cnt/2000 );
+	if(cnt%interval==0)
 	{
-		Vec3 start_pos = RandomVec3(Vec3(-220, -220, 250), Vec3(220, 220, 280));
-		Vec3 start_speed = RandomVec3(Vec3(-0.2, -0.2, 0), Vec3(0.2, 0.2, 0));
-		AddBomb(start_pos, start_speed);
-
-		if(cnt%(3*25)==0 && !GameOver())
+		for(int i=1; i<=3; i++)
 		{
-			Vec3 player_pos = Vec3(0,0,0) * player_matrix->getMatrix() + Vec3(0,0,250);
+			Vec3 start_pos = RandomVec3(Vec3(-250, -250, 250), Vec3(250, 250, 280));
+			Vec3 start_speed = RandomVec3(Vec3(-0.2, -0.2, -0.5), Vec3(0.2, 0.2, -0.5));
+			AddBomb(start_pos, start_speed);
+		}
+
+		if(cnt%(5*interval)==0 && !GameOver())
+		{
+			Vec3 player_pos = Vec3(0,0,0) * player_matrix->getMatrix() + Vec3(0,0,200);
 			AddBomb(player_pos, Vec3(0,0,0));
 		}
 	}
@@ -114,11 +119,12 @@ void SceneGroup::Update()
 	}
 	else
 	{
-		std::string score_text;
+		std::string score_text = "Score: ";
+		std::string tmp;
 		s_stream.clear();
-		s_stream<<"Score: "<<(cnt/10);
-		s_stream>>score_text;
-		score->setText(score_text);
+		s_stream<<(cnt/10);
+		s_stream>>tmp;
+		score->setText(score_text+tmp);
 	}
 
 	while(!remove_list.empty())

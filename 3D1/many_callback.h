@@ -428,48 +428,6 @@ public:
 	double angle ;
 };
 
-/*class BombCallback : public osg::NodeCallback
-{
-public:
-	Vec3 start_position;
-	Vec3 velocity;
-	Node* ground;
-	Geometry *geometry;
 
-public:
-	BombCallback(Vec3 start_pos)
-	{
-		start_position = start_pos;
-		velocity.set(Vec3(0.1,0,0));
-	}
-
-	virtual void operator()(osg::Node* node ,osg::NodeVisitor* nv)
-	{
-		using namespace osg;
-		MatrixTransform* matrix_node = dynamic_cast<MatrixTransform*>(node);
-		Matrix matrix = matrix_node->getMatrix();
-
-		velocity += Vec3(0, 0, -0.002);
-
-		matrix.postMultTranslate(velocity);
-
-		matrix_node->setMatrix(matrix);
-
-		Vec3 now_position = start_position * matrix;
-
-		osgUtil::IntersectVisitor ivXY; 
-		//根据新的位置得到两条线段检测
-		osg::ref_ptr<osg::LineSegment> lineXY = new osg::LineSegment(now_position, now_position+velocity); 
-
-		ivXY.addLineSegment(lineXY);
-		//结构交集检测
-		GAME.main_camera->m_pHostViewer->getSceneData()->accept(ivXY) ;
-		if(ivXY.hits())
-		{
-			;
-		}
-		return;
-	}
-};*/
 
 #endif 
