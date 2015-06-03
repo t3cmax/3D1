@@ -52,7 +52,7 @@ int main()
 	lz_node->setNodeMask(ReceivesShadowTraversalMask);
 
 	osg::Image* wall_image = new osg::Image();
-	wall_image = osgDB::readImageFile("Images/wall.jpg");
+	wall_image = osgDB::readImageFile("wall.jpg");
 	fence_node[0] = createWall(wall_image, -300, 300, 170);
 	fence_node[1] = createWall(wall_image, -300, 300, 170);
 
