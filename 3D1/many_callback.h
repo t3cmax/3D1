@@ -257,6 +257,7 @@ public:
 			/////////////////////////
 			//v.makeTranslate(GAME.main_camera->m_vPosition);
 			
+			/*
 			mov3=GAME.main_camera->m_vPosition;
 			mr=mtCow->getMatrix();
 			mov3=mov3*mr.inverse(mr);
@@ -264,11 +265,19 @@ public:
 			mov3=mov3*v;
 			mov3=mov3*mr;
 			GAME.main_camera->m_vPosition=mov3;
-
+			*/
 
 			GAME.main_camera->m_vRotation._v[2] += osg::DegreesToRadians(GAME.main_camera->m_fAngle);
 			
 			GAME.cow.dir+=osg::DegreesToRadians(GAME.main_camera->m_fAngle);
+			//////////////////////////////////////////////////////////////////
+			mr=mtCow->getMatrix();
+			mov3=osg::Vec3(0.0f,0.9f,0.8f);
+			mov3=mov3*mr;
+			GAME.main_camera->m_vPosition=mov3;
+			//m_vPosition = osg::Vec3(-22.0f, -224.9f, 99.8f);
+            //m_vRotation = osg::Vec3((osg::PI_4)+0.6f, 0.0f, 0.0f);	
+
 		}
 		if((GAME.cow.state&32)!=0)
 		{
@@ -279,7 +288,7 @@ public:
 			mtCow->setMatrix(mr);
 			
 			/////////////////////////////
-			
+			/*
 			mov3=GAME.main_camera->m_vPosition;
 			mr=mtCow->getMatrix();
 			mov3=mov3*mr.inverse(mr);
@@ -287,10 +296,16 @@ public:
 			mov3=mov3*v;
 			mov3=mov3*mr;
 			GAME.main_camera->m_vPosition=mov3;
+			*/
 
 			GAME.main_camera->m_vRotation._v[2] -= osg::DegreesToRadians(GAME.main_camera->m_fAngle);
 			
 			GAME.cow.dir-=osg::DegreesToRadians(GAME.main_camera->m_fAngle);
+			////////////////////////////////////////////////////////////
+			mr=mtCow->getMatrix();
+			mov3=osg::Vec3(0.0f,0.9f,0.8f);
+			mov3=mov3*mr;
+			GAME.main_camera->m_vPosition=mov3;
 		}
 		//angle+= 0.01 ;
 
@@ -339,7 +354,7 @@ public:
 						move_a_bit(node,osg::Vec3(0.0f,0.0f,-0.1f));
 						pos2=pos2+osg::Vec3(0.0f,0.0f,-0.1f);
 						pos1=pos1+osg::Vec3(0.0f,0.0f,-0.1f);
-						cout<<"!!!!!!!!!!!!!!"<<endl;
+						//cout<<"!!!!!!!!!!!!!!"<<endl;
 						times++;
 					}
 				}
@@ -369,7 +384,7 @@ public:
 							move_a_bit(node,osg::Vec3(0.0f,0.0f,0.1f));
 							pos2=pos2+osg::Vec3(0.0f,0.0f,0.1f);
 							pos1=pos1+osg::Vec3(0.0f,0.0f,0.1f);
-							cout<<pos1._v[2]<<' '<<pos2._v[2]<<"((((((((((("<<endl;
+							//cout<<pos1._v[2]<<' '<<pos2._v[2]<<"((((((((((("<<endl;
 							times++;
 						}
 						else
@@ -388,7 +403,7 @@ public:
 	
 	void move_a_bit(osg::Node* node,osg::Vec3 dat)
 	{
-		cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+		//cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 		//创建矩阵变换节点
 		osg::MatrixTransform* mtCow = dynamic_cast<osg::MatrixTransform*>(node);
 		//创建矩阵
