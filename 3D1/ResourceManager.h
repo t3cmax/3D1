@@ -6,6 +6,7 @@ class ResourceManager
 {
 public:
 	Texture2D* bomb_texture;
+	osgText::Font* simhei;
 
 public:
 	ResourceManager(void);

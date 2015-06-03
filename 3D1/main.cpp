@@ -13,11 +13,14 @@
 #include "CreateBomb.h"
 #include "SceneGroup.h"
 #include "ResourceManager.h"
+#include "CreateHUDText.h"
 
 using namespace osg;
 
 z_game GAME; 
 ResourceManager *res_manager;
+
+
 
 const int ReceivesShadowTraversalMask = 0x1;
 const int CastsShadowTraversalMask = 0x2;
@@ -111,7 +114,8 @@ int main()
 	
 	root->addChild(createSkyBox());
 	root->addChild(shadowedScene);
-	root->addChild(scene_group->scene_root);
+	root->addChild(createHUDText(scene_group->health));
+	root->addChild(createHUDText(scene_group->score));
 
 	//把漫游器加入到场景中
 	GAME.main_camera=TravelManipulator::TravelToScene(viewer);
@@ -124,10 +128,21 @@ int main()
 
 	viewer->realize();
 
-	int cnt=0;
+	bool already_over = false;
 	while(!viewer->done())
 	{
 		scene_group->Update();
+		if(!already_over && scene_group->GameOver())
+		{
+			osgText::Text* gameover_text = new osgText::Text();
+			gameover_text->setText("Game Over\nPress ESC to Exit");
+			gameover_text->setFont(res_manager->simhei);
+			gameover_text->setPosition(Vec3(400, 500, 0));
+			gameover_text->setColor(Vec4(1, 1, 1, 1));
+			gameover_text->setCharacterSize(60.0);
+			root->addChild(createHUDText(gameover_text));
+			already_over = true;
+		}
 		viewer->frame();
 	}
 
